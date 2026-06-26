@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mon Compte - Zynk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #000;
+      --white: #fff;
+      --acid: #D4FF00;
+      --card-bg: #0f0f0f;
+      --border: #1c1c1c;
+      --muted: #555;
+    }
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      padding: 60px 20px 40px;
+    }
+    .profile-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      padding: 40px;
+      border-radius: 8px;
+    }
+    .profile-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .profile-avatar {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 20px;
+      background: var(--acid);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      color: var(--black);
+      font-weight: 700;
+    }
+    .profile-name {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .profile-email {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+    .profile-info {
+      margin-bottom: 40px;
+      padding: 20px;
+      background: rgba(212, 255, 0, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+    .profile-info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .profile-info-row:last-child {
+      border-bottom: none;
+    }
+    .profile-info-label {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .profile-info-value {
+      font-weight: 600;
+    }
+    .logout-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--acid);
+      border: none;
+      color: var(--black);
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+    .logout-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(212, 255, 0, 0.3);
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 20px;
+      color: var(--acid);
+      text-decoration: none;
+      font-size: 12px;
+      transition: color 0.2s;
+    }
+    .back-link:hover {
+      color: var(--white);
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .logout-btn {
+      flex: 1;
+    }
+
+    .delete-btn {
+      flex: 1;
+      padding: 14px;
+      background: #ff2d55;
+      border: none;
+      color: var(--white);
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .delete-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(255, 45, 85, 0.3);
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      padding: 40px;
+      border-radius: 8px;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #ff2d55;
+      margin-bottom: 16px;
+    }
+
+    .modal-message {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .modal-btn {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      font-weight: 600;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: transform 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .modal-btn-confirm {
+      background: #ff2d55;
+      color: var(--white);
+    }
+
+    .modal-btn-confirm:hover {
+      transform: translateY(-2px);
+    }
+
+    .modal-btn-cancel {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--white);
+    }
+
+    .modal-btn-cancel:hover {
+      transform: translateY(-2px);
+      border-color: var(--acid);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="profile-container">
+    <div class="profile-header">
+      <div class="profile-avatar" id="avatar"></div>
+      <h1 class="profile-name" id="fullName"></h1>
+      <p class="profile-email" id="userEmail"></p>
+    </div>
+
+    <div class="profile-info">
+      <div class="profile-info-row">
+        <span class="profile-info-label" data-i18n="label-firstName">Prénom</span>
+        <span class="profile-info-value" id="firstName"></span>
+      </div>
+      <div class="profile-info-row">
+        <span class="profile-info-label" data-i18n="label-lastName">Nom</span>
+        <span class="profile-info-value" id="lastName"></span>
+      </div>
+      <div class="profile-info-row">
+        <span class="profile-info-label" data-i18n="label-email">Email</span>
+        <span class="profile-info-value" id="emailInfo"></span>
+      </div>
+      <div class="profile-info-row">
+        <span class="profile-info-label" data-i18n="label-created">Compte créé le</span>
+        <span class="profile-info-value" id="createdAt"></span>
+      </div>
+    </div>
+
+    <div class="button-group">
+      <button class="logout-btn" onclick="handleLogout()" data-i18n="btn-logout">SE DÉCONNECTER</button>
+      <button class="delete-btn" onclick="openDeleteModal()" data-i18n="btn-delete">SUPPRIMER LE COMPTE</button>
+    </div>
+    <a href="index.html" class="back-link" data-i18n="btn-back-site">← Retour au site</a>
+  </div>
+
+  <!-- Modal de confirmation suppression -->
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal">
+      <h2 class="modal-title" data-i18n="modal-title">⚠️ Supprimer le compte</h2>
+      <p class="modal-message" data-i18n="modal-message">
+        Êtes-vous sûr ? Cette action est <strong>irréversible</strong>.
+        <br><br>
+        Toutes vos données seront supprimées et vous ne pourrez plus vous connecter avec cet email.
+        <br><br>
+        Vous pourrez récrée un compte en vous réinscrivant.
+      </p>
+      <div class="modal-buttons">
+        <button class="modal-btn modal-btn-cancel" onclick="closeDeleteModal()" data-i18n="btn-cancel">ANNULER</button>
+        <button class="modal-btn modal-btn-confirm" onclick="confirmDeleteAccount()" data-i18n="btn-confirm-delete">SUPPRIMER</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Translations Dictionary
+    const translations = {
+      fr: {
+        'label-firstName': 'Prénom',
+        'label-lastName': 'Nom',
+        'label-email': 'Email',
+        'label-created': 'Compte créé le',
+        'btn-logout': 'SE DÉCONNECTER',
+        'btn-delete': 'SUPPRIMER LE COMPTE',
+        'btn-back-site': '← Retour au site',
+        'modal-title': '⚠️ Supprimer le compte',
+        'modal-message': 'Êtes-vous sûr ? Cette action est irréversible.\n\nToutes vos données seront supprimées et vous ne pourrez plus vous connecter avec cet email.\n\nVous pourrez récrée un compte en vous réinscrivant.',
+        'btn-cancel': 'ANNULER',
+        'btn-confirm-delete': 'SUPPRIMER',
+        'notification-deleted': 'Compte supprimé avec succès.'
+      },
+      en: {
+        'label-firstName': 'First Name',
+        'label-lastName': 'Last Name',
+        'label-email': 'Email',
+        'label-created': 'Account Created',
+        'btn-logout': 'SIGN OUT',
+        'btn-delete': 'DELETE ACCOUNT',
+        'btn-back-site': '← Back to Website',
+        'modal-title': '⚠️ Delete Account',
+        'modal-message': 'Are you sure? This action is irreversible.\n\nAll your data will be deleted and you will no longer be able to log in with this email.\n\nYou can create a new account by signing up again.',
+        'btn-cancel': 'CANCEL',
+        'btn-confirm-delete': 'DELETE',
+        'notification-deleted': 'Account successfully deleted.'
+      }
+    };
+
+    function applyTranslations(lang) {
+      const trans = translations[lang];
+      Object.keys(trans).forEach(key => {
+        const elements = document.querySelectorAll(`[data-i18n="${key}"]`);
+        elements.forEach(element => {
+          if (key === 'modal-message') {
+            element.innerHTML = trans[key].replace(/\n/g, '<br>');
+          } else {
+            element.textContent = trans[key];
+          }
+        });
+      });
+    }
+
+    function initLanguage() {
+      const savedLanguage = localStorage.getItem('selectedLanguage') || 'fr';
+      applyTranslations(savedLanguage);
+      document.documentElement.lang = savedLanguage;
+    }
+
+    function initProfile() {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+      if (!currentUser) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      const avatar = currentUser.firstName.charAt(0).toUpperCase() + currentUser.lastName.charAt(0).toUpperCase();
+      document.getElementById('avatar').textContent = avatar;
+      document.getElementById('fullName').textContent = currentUser.firstName + ' ' + currentUser.lastName;
+      document.getElementById('userEmail').textContent = currentUser.email;
+      document.getElementById('firstName').textContent = currentUser.firstName;
+      document.getElementById('lastName').textContent = currentUser.lastName;
+      document.getElementById('emailInfo').textContent = currentUser.email;
+
+      const lang = localStorage.getItem('selectedLanguage') || 'fr';
+      const date = new Date(currentUser.createdAt);
+      const formattedDate = lang === 'en'
+        ? date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+        : date.toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' });
+      document.getElementById('createdAt').textContent = formattedDate;
+    }
+
+    function handleLogout() {
+      localStorage.removeItem('currentUser');
+      window.location.href = 'index.html';
+    }
+
+    function openDeleteModal() {
+      document.getElementById('deleteModal').classList.add('active');
+    }
+
+    function closeDeleteModal() {
+      document.getElementById('deleteModal').classList.remove('active');
+    }
+
+    function confirmDeleteAccount() {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+      if (!currentUser) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      // Récupérer tous les utilisateurs
+      const users = JSON.parse(localStorage.getItem('zynkUsers')) || [];
+
+      // Supprimer l'utilisateur actuel
+      const updatedUsers = users.filter(user => user.id !== currentUser.id);
+
+      // Sauvegarder la liste mise à jour
+      localStorage.setItem('zynkUsers', JSON.stringify(updatedUsers));
+
+      // Déconnecter l'utilisateur
+      localStorage.removeItem('currentUser');
+
+      // Afficher un message de confirmation et rediriger
+      showDeleteNotification();
+
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 2000);
+    }
+
+    function showDeleteNotification() {
+      const lang = localStorage.getItem('selectedLanguage') || 'fr';
+      const message = translations[lang]['notification-deleted'];
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #ff2d55;
+        color: var(--white);
+        padding: 16px 32px;
+        border-radius: 4px;
+        font-weight: 600;
+        z-index: 2000;
+        animation: slide-down 0.4s ease-out;
+      `;
+      notification.textContent = message;
+      document.body.appendChild(notification);
+
+      setTimeout(() => {
+        notification.remove();
+      }, 2000);
+    }
+
+    // Fermer le modal au clic en dehors
+    document.addEventListener('click', function(e) {
+      const modal = document.getElementById('deleteModal');
+      if (e.target === modal) {
+        closeDeleteModal();
+      }
+    });
+
+    // Fermer le modal avec Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeDeleteModal();
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', function() {
+      initLanguage();
+      initProfile();
+    });
+  </script>
+
+</body>
+</html>

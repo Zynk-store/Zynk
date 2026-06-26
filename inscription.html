@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>S''inscrire - Zynk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #000;
+      --white: #fff;
+      --acid: #D4FF00;
+      --card-bg: #0f0f0f;
+      --border: #1c1c1c;
+      --muted: #555;
+    }
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: ''Inter'', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+    }
+
+    .back-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--white);
+      padding: 10px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: all 0.2s;
+      font-family: ''Inter'', sans-serif;
+      z-index: 100;
+    }
+
+    .back-btn:hover {
+      border-color: var(--acid);
+      color: var(--acid);
+      transform: translateX(-2px);
+    }
+    .auth-container {
+      width: 100%;
+      max-width: 400px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      padding: 40px;
+      border-radius: 8px;
+    }
+    .auth-logo {
+      font-family: ''Bebas Neue'', sans-serif;
+      font-size: 32px;
+      letter-spacing: 4px;
+      text-align: center;
+      margin-bottom: 30px;
+      color: var(--acid);
+    }
+    .auth-title {
+      font-size: 18px;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 30px;
+      color: var(--white);
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--white);
+      font-family: ''Inter'', sans-serif;
+      font-size: 14px;
+      transition: border-color 0.25s;
+      border-radius: 4px;
+    }
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--acid);
+      box-shadow: 0 0 10px rgba(212, 255, 0, 0.1);
+    }
+    .form-group input::placeholder {
+      color: var(--muted);
+    }
+    .password-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .password-toggle {
+      position: absolute;
+      right: 12px;
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 4px 8px;
+      transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+    }
+    .password-toggle:hover {
+      color: var(--acid);
+    }
+    .eye-icon {
+      width: 18px;
+      height: 18px;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .password-input {
+      padding-right: 45px !important;
+    }
+    .auth-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--acid);
+      border: none;
+      color: var(--black);
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      font-family: ''Inter'', sans-serif;
+    }
+    .auth-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(212, 255, 0, 0.3);
+    }
+    .auth-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .auth-link {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .auth-link a {
+      color: var(--acid);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .auth-link a:hover {
+      color: var(--white);
+    }
+    .error-message {
+      background: rgba(255, 45, 85, 0.1);
+      border: 1px solid #ff2d55;
+      color: #ff2d55;
+      padding: 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    .error-message.show {
+      display: block;
+    }
+    .notification {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--acid);
+      color: var(--black);
+      padding: 16px 32px;
+      border-radius: 4px;
+      font-weight: 600;
+      z-index: 1000;
+      animation: slide-down 0.4s ease-out;
+    }
+    @keyframes slide-down {
+      from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <button class="back-btn" onclick="window.location.href='index.html'" data-i18n="btn-back">← Retour</button>
+
+  <div class="auth-container">
+    <div class="auth-logo">ZYNK</div>
+    <h1 class="auth-title" data-i18n="auth-title">S''INSCRIRE</h1>
+
+    <div class="error-message" id="errorMessage"></div>
+
+    <form id="registerForm" onsubmit="handleRegister(event)">
+      <div class="form-group">
+        <label for="firstName" data-i18n="label-firstName">Prénom</label>
+        <input type="text" id="firstName" required placeholder="Votre prénom" data-i18n-placeholder="placeholder-firstName">
+      </div>
+
+      <div class="form-group">
+        <label for="lastName" data-i18n="label-lastName">Nom</label>
+        <input type="text" id="lastName" required placeholder="Votre nom" data-i18n-placeholder="placeholder-lastName">
+      </div>
+
+      <div class="form-group">
+        <label for="email" data-i18n="label-email">Email</label>
+        <input type="email" id="email" required placeholder="votre@email.com" data-i18n-placeholder="placeholder-email">
+      </div>
+
+      <div class="form-group">
+        <label for="password" data-i18n="label-password">Mot de passe</label>
+        <div class="password-container">
+          <input type="password" id="password" class="password-input" required placeholder="••••••••" minlength="6" data-i18n-placeholder="placeholder-password">
+          <button type="button" class="password-toggle" id="togglePassword" onclick="togglePasswordVisibility('password')" title="Afficher/Masquer">
+            <svg id="eyeHiddenPassword" class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+              <line x1="1" y1="1" x2="23" y2="23"></line>
+            </svg>
+            <svg id="eyeVisiblePassword" class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword" data-i18n="label-confirmPassword">Confirmer le mot de passe</label>
+        <div class="password-container">
+          <input type="password" id="confirmPassword" class="password-input" required placeholder="••••••••" minlength="6" data-i18n-placeholder="placeholder-confirmPassword">
+          <button type="button" class="password-toggle" id="toggleConfirmPassword" onclick="togglePasswordVisibility('confirmPassword')" title="Afficher/Masquer">
+            <svg id="eyeHiddenConfirm" class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+              <line x1="1" y1="1" x2="23" y2="23"></line>
+            </svg>
+            <svg id="eyeVisibleConfirm" class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <button type="submit" class="auth-btn" id="submitBtn" data-i18n="btn-submit">Créer mon compte</button>
+    </form>
+
+    <div class="auth-link">
+      <span data-i18n="auth-link-text">Vous avez déjà un compte ?</span> <a href="login.html" data-i18n="auth-link">Se connecter</a>
+    </div>
+  </div>
+
+  <script>
+    // Translations Dictionary
+    const translations = {
+      fr: {
+        'btn-back': '← Retour',
+        'auth-title': 'S\'INSCRIRE',
+        'label-firstName': 'Prénom',
+        'label-lastName': 'Nom',
+        'label-email': 'Email',
+        'label-password': 'Mot de passe',
+        'label-confirmPassword': 'Confirmer le mot de passe',
+        'placeholder-firstName': 'Votre prénom',
+        'placeholder-lastName': 'Votre nom',
+        'placeholder-email': 'votre@email.com',
+        'placeholder-password': '••••••••',
+        'placeholder-confirmPassword': '••••••••',
+        'btn-submit': 'Créer mon compte',
+        'auth-link-text': 'Vous avez déjà un compte ?',
+        'auth-link': 'Se connecter',
+        'error-required': 'Tous les champs sont obligatoires.',
+        'error-mismatch': 'Les mots de passe ne correspondent pas.',
+        'error-minlength': 'Le mot de passe doit contenir au moins 6 caractères.',
+        'error-email-used': 'Cet email est déjà utilisé.',
+        'btn-creating': 'Création en cours...',
+        'notification-welcome': 'Bienvenue sur notre site, compte créé avec succès !'
+      },
+      en: {
+        'btn-back': '← Back',
+        'auth-title': 'SIGN UP',
+        'label-firstName': 'First Name',
+        'label-lastName': 'Last Name',
+        'label-email': 'Email',
+        'label-password': 'Password',
+        'label-confirmPassword': 'Confirm Password',
+        'placeholder-firstName': 'Your first name',
+        'placeholder-lastName': 'Your last name',
+        'placeholder-email': 'your@email.com',
+        'placeholder-password': '••••••••',
+        'placeholder-confirmPassword': '••••••••',
+        'btn-submit': 'Create Account',
+        'auth-link-text': 'Already have an account?',
+        'auth-link': 'Sign in',
+        'error-required': 'All fields are required.',
+        'error-mismatch': 'Passwords do not match.',
+        'error-minlength': 'Password must be at least 6 characters.',
+        'error-email-used': 'This email is already in use.',
+        'btn-creating': 'Creating account...',
+        'notification-welcome': 'Welcome! Your account has been created successfully!'
+      }
+    };
+
+    function applyTranslations(lang) {
+      const trans = translations[lang];
+      // Apply text content
+      Object.keys(trans).forEach(key => {
+        const elements = document.querySelectorAll(`[data-i18n="${key}"]`);
+        elements.forEach(element => {
+          element.textContent = trans[key];
+        });
+      });
+      // Apply placeholders
+      const placeholders = document.querySelectorAll('[data-i18n-placeholder]');
+      placeholders.forEach(element => {
+        const key = element.getAttribute('data-i18n-placeholder');
+        if (trans[key]) {
+          element.placeholder = trans[key];
+        }
+      });
+    }
+
+    function initLanguage() {
+      const savedLanguage = localStorage.getItem('selectedLanguage') || 'fr';
+      applyTranslations(savedLanguage);
+      document.documentElement.lang = savedLanguage;
+    }
+
+    function showError(messageKey) {
+      const lang = localStorage.getItem('selectedLanguage') || 'fr';
+      const message = translations[lang][messageKey];
+      const errorDiv = document.getElementById('errorMessage');
+      errorDiv.textContent = message;
+      errorDiv.classList.add('show');
+      setTimeout(() => {
+        errorDiv.classList.remove('show');
+      }, 4000);
+    }
+
+    function showNotification(messageKey) {
+      const lang = localStorage.getItem('selectedLanguage') || 'fr';
+      const message = translations[lang][messageKey];
+      const notification = document.createElement('div');
+      notification.className = 'notification';
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      setTimeout(() => {
+        notification.remove();
+      }, 4000);
+    }
+
+    function sendWelcomeEmail(email, firstName) {
+      const emailContent = {
+        email: email,
+        user_name: firstName,
+        subject: 'Bienvenue sur ZYNK !',
+        from_email: 'service.zynk@gmail.com'
+      };
+
+      try {
+        console.log('Initialisation EmailJS...');
+        emailjs.init('i4FaV936gyU34i3hO');
+        console.log('EmailJS initialisé. Envoi du mail...');
+
+        emailjs.send('service_h08w22j', 'template_kpsokvh', emailContent)
+          .then(response => {
+            console.log('✓ Email envoyé avec succès!', response);
+          })
+          .catch(error => {
+            console.error('✗ Erreur lors de l\'envoi du mail:', error);
+          });
+      } catch (e) {
+        console.error('✗ Erreur EmailJS:', e);
+      }
+    }
+
+    function handleRegister(event) {
+      event.preventDefault();
+
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName = document.getElementById('lastName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      const submitBtn = document.getElementById('submitBtn');
+
+      if (!firstName || !lastName || !email || !password) {
+        showError('error-required');
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        showError('error-mismatch');
+        return;
+      }
+
+      if (password.length < 6) {
+        showError('error-minlength');
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem('zynkUsers')) || [];
+      if (users.some(user => user.email === email)) {
+        showError('error-email-used');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      const lang = localStorage.getItem('selectedLanguage') || 'fr';
+      submitBtn.textContent = translations[lang]['btn-creating'];
+
+      setTimeout(() => {
+        const newUser = {
+          id: Date.now(),
+          firstName,
+          lastName,
+          email,
+          password: btoa(password),
+          createdAt: new Date().toISOString()
+        };
+
+        users.push(newUser);
+        localStorage.setItem('zynkUsers', JSON.stringify(users));
+        localStorage.setItem('currentUser', JSON.stringify(newUser));
+
+        sendWelcomeEmail(email, firstName);
+
+        showNotification('notification-welcome');
+
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 2000);
+      }, 500);
+    }
+
+    // Toggle password visibility
+    function togglePasswordVisibility(fieldId) {
+      const passwordInput = document.getElementById(fieldId);
+      const hiddenIcon = fieldId === 'password' ?
+        document.getElementById('eyeHiddenPassword') :
+        document.getElementById('eyeHiddenConfirm');
+      const visibleIcon = fieldId === 'password' ?
+        document.getElementById('eyeVisiblePassword') :
+        document.getElementById('eyeVisibleConfirm');
+
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        hiddenIcon.style.display = 'none';
+        visibleIcon.style.display = 'block';
+      } else {
+        passwordInput.type = 'password';
+        hiddenIcon.style.display = 'block';
+        visibleIcon.style.display = 'none';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', initLanguage);
+  </script>
+
+</body>
+</html>

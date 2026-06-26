@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tous nos produits  Zynk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #000;
+      --white: #fff;
+      --acid: #D4FF00;
+      --card-bg: #0f0f0f;
+      --border: #1c1c1c;
+      --muted: #555;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      letter-spacing: 0.01em;
+      overflow-x: hidden;
+    }
+
+    /*  HEADER  */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 32px;
+      height: 60px;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 300;
+    }
+
+    .header-left { display: flex; align-items: center; gap: 20px; }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px;
+      letter-spacing: 4px;
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .header-right { display: flex; align-items: center; gap: 20px; }
+
+    .cart-btn {
+      background: none; border: none; color: var(--white);
+      cursor: pointer; font-size: 18px;
+      position: relative;
+    }
+    .cart-count {
+      position: absolute;
+      top: -6px; right: -8px;
+      background: var(--acid);
+      color: var(--black);
+      font-size: 9px;
+      font-weight: 700;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .account-btn {
+      background: none; border: none; color: var(--white);
+      cursor: pointer; font-size: 18px;
+      transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      outline: none;
+    }
+    .account-btn:hover svg {
+      stroke: var(--acid);
+    }
+    .account-btn:focus {
+      outline: none;
+    }
+
+    /*  CONTENT  */
+    .content {
+      padding: 100px 32px;
+      max-width: 900px;
+      margin: 0 auto;
+      margin-top: 20px;
+    }
+
+    .page-header {
+      margin-bottom: 50px;
+      text-align: center;
+      border-bottom: 2px solid var(--acid);
+      padding-bottom: 30px;
+    }
+
+    .page-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 48px;
+      letter-spacing: 3px;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+
+    .page-subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /*  CATEGORY SECTION  */
+    .cat-section {
+      margin-bottom: 80px;
+    }
+
+    .cat-header {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+
+    .cat-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px;
+      letter-spacing: 3px;
+      color: var(--white);
+    }
+
+    .cat-count {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.25s;
+    }
+    .card:hover { border-color: #333; }
+
+    .card-img {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s cubic-bezier(.4,0,.2,1);
+      background: #141414;
+    }
+    .card:hover .card-img { transform: scale(1.04); }
+
+    .card-img-placeholder {
+      width: 100%;
+      aspect-ratio: 3/4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+      padding: 20px;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .card:hover .card-img-placeholder { transform: scale(1.04); }
+
+    .card-img-placeholder {
+      width: 100%;
+      aspect-ratio: 3/4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+      padding: 20px;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .card:hover .card-img-placeholder { transform: scale(1.04); }
+
+    .card-body {
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .card-name {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    .card-price {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--acid);
+    }
+
+    .card-add {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background: transparent;
+      border: none;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: background 0.2s, color 0.2s;
+    }
+    .card-add:hover {
+      background: var(--acid);
+      color: var(--black);
+      font-weight: 600;
+    }
+
+    .products-wrapper {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .products-wrapper .products {
+      flex: 1;
+    }
+
+    .cat-more-btn {
+      padding: 12px 20px;
+      border: none;
+      background: transparent;
+      color: var(--acid);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: transform 0.25s, color 0.25s;
+      font-family: 'Inter', sans-serif;
+      white-space: nowrap;
+      height: fit-content;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    .cat-more-btn:hover {
+      transform: translateX(5px);
+      color: var(--white);
+    }
+    .cat-more-btn::before {
+      content: '
+      font-size: 16px;
+      transition: transform 0.25s;
+    }
+    .cat-more-btn:hover::before {
+      transform: translateX(3px);
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 40px;
+      padding: 12px 24px;
+      border: 1px solid var(--acid);
+      color: var(--acid);
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: background 0.25s, color 0.25s;
+      background: transparent;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+    }
+    .back-link:hover {
+      background: var(--acid);
+      color: var(--black);
+    }
+
+    /*  FOOTER  */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 60px 32px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .footer-brand .logo {
+      font-size: 40px;
+      display: block;
+      margin-bottom: 8px;
+    }
+    .footer-brand p {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+
+    .footer-social h4 {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .footer-social a {
+      display: block;
+      color: var(--white);
+      text-decoration: none;
+      font-size: 13px;
+      margin-bottom: 8px;
+      transition: color 0.2s;
+    }
+    .footer-social a:hover { color: var(--acid); }
+
+    .footer-copy {
+      width: 100%;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: 600px) {
+      header { padding: 0 20px; }
+      .content { padding: 80px 16px; }
+      .products { grid-template-columns: 1fr; }
+      footer { padding: 40px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-left">
+      <a href="index.html" class="logo">Zynk</a>
+    </div>
+    <div class="header-right">
+      <button class="cart-btn" aria-label="Panier" title="Panier" onclick="window.location.href='panier.html'">
+        🛒
+        <span class="cart-count">0</span>
+      </button>
+      <button class="account-btn" aria-label="S'identifier" title="S'identifier" onclick="window.location.href='login.html'">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="content">
+    <div class="page-header">
+      <h1 class="page-title" data-i18n="page-title">Tous nos produits</h1>
+      <p class="page-subtitle" data-i18n="page-subtitle">Catalogue complet Zynk</p>
+    </div>
+
+    <!-- PULLS -->
+    <div class="cat-section">
+      <div class="cat-header">
+        <h2 class="cat-title" data-i18n="pulls-title">Pulls</h2>
+        <span class="cat-count" data-i18n="pulls-count">2 pièces</span>
+      </div>
+      <div class="products-wrapper">
+        <div class="products" id="productsContainerPulls"></div>
+        <a href="pulls.html" class="cat-more-btn" data-i18n="btn-see-more">Voir plus</a>
+      </div>
+    </div>
+
+    <!-- VESTES -->
+    <div class="cat-section">
+      <div class="cat-header">
+        <h2 class="cat-title" data-i18n="vestes-title">Vestes</h2>
+        <span class="cat-count" data-i18n="vestes-count">2 pièces</span>
+      </div>
+      <div class="products-wrapper">
+        <div class="products" id="productsContainerVestes"></div>
+        <a href="vestes.html" class="cat-more-btn">Voir plus</a>
+      </div>
+    </div>
+
+    <!-- T-SHIRTS -->
+    <div class="cat-section">
+      <div class="cat-header">
+        <h2 class="cat-title" data-i18n="tshirts-title">T-shirts</h2>
+        <span class="cat-count" data-i18n="tshirts-count">2 pièces</span>
+      </div>
+      <div class="products-wrapper">
+        <div class="products" id="productsContainerTshirts"></div>
+        <a href="tshirts.html" class="cat-more-btn">Voir plus</a>
+      </div>
+    </div>
+
+    <!-- CASQUETTES -->
+    <div class="cat-section">
+      <div class="cat-header">
+        <h2 class="cat-title" data-i18n="casquettes-title">Casquettes</h2>
+        <span class="cat-count" data-i18n="casquettes-count">2 pièces</span>
+      </div>
+      <div class="products-wrapper">
+        <div class="products" id="productsContainerCasquettes"></div>
+        <a href="casquettes.html" class="cat-more-btn">Voir plus</a>
+      </div>
+    </div>
+
+    <button class="back-link" onclick="history.back()" data-i18n="btn-back"> Retour</button>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">
+      <span class="logo">Zynk</span>
+      <p data-i18n="footer-tagline">Streetwear Premium  Marseille</p>
+    </div>
+    <div class="footer-social">
+      <h4 data-i18n="footer-social-title">Suivez-nous</h4>
+      <a href="https://instagram.com/mathis_spamz" target="_blank">Instagram · @mathis_spamz</a>
+      <a href="https://tiktok.com/@mathis_spamz" target="_blank">TikTok · @mathis_spamz</a>
+    </div>
+    <p class="footer-copy" data-i18n="footer-copy"> 2025 Zynk. Tous droits réservés.</p>
+  </footer>
+
+  <script src="produits.js"></script>
+  <script>
+    // Translations Dictionary
+    const translations = {
+      fr: {
+        'page-title': 'Tous nos produits',
+        'page-subtitle': 'Catalogue complet Zynk',
+        'pulls-title': 'Pulls',
+        'pulls-count': '2 pièces',
+        'vestes-title': 'Vestes',
+        'vestes-count': '2 pièces',
+        'tshirts-title': 'T-shirts',
+        'tshirts-count': '2 pièces',
+        'casquettes-title': 'Casquettes',
+        'casquettes-count': '2 pièces',
+        'btn-back': ' Retour',
+        'btn-add': 'Ajouter au panier',
+        'btn-details': 'Voir les détails',
+        'btn-see-more': 'Voir plus',
+        'footer-tagline': 'Streetwear Premium  Marseille',
+        'footer-social-title': 'Suivez-nous',
+        'footer-copy': ' 2025 Zynk. Tous droits réservés.'
+      },
+      en: {
+        'page-title': 'All our products',
+        'page-subtitle': 'Complete Zynk Catalog',
+        'pulls-title': 'Sweaters',
+        'pulls-count': '2 items',
+        'vestes-title': 'Jackets',
+        'vestes-count': '2 items',
+        'tshirts-title': 'T-shirts',
+        'tshirts-count': '2 items',
+        'casquettes-title': 'Caps',
+        'casquettes-count': '2 items',
+        'btn-back': ' Back',
+        'btn-add': 'Add to cart',
+        'btn-details': 'View details',
+        'btn-see-more': 'See more',
+        'footer-tagline': 'Premium Streetwear  Marseille',
+        'footer-social-title': 'Follow us',
+        'footer-copy': ' 2025 Zynk. All rights reserved.'
+      }
+    };
+
+    function applyTranslations(lang) {
+      const trans = translations[lang];
+      Object.keys(trans).forEach(key => {
+        const elements = document.querySelectorAll(`[data-i18n="${key}"]`);
+        elements.forEach(element => {
+          element.textContent = trans[key];
+        });
+      });
+    }
+
+    function initLanguage() {
+      const savedLanguage = localStorage.getItem('selectedLanguage') || 'fr';
+      applyTranslations(savedLanguage);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      initLanguage();
+    });
+
+    // Currency Management
+    const EUR_TO_USD = 1.14;
+
+    function getCurrency() {
+      return localStorage.getItem('selectedCurrency') || 'eur';
+    }
+
+    function formatPrice(priceEur) {
+      const currency = getCurrency();
+      if (currency === 'usd') {
+        const usdPrice = Math.round(priceEur * EUR_TO_USD * 100) / 100;
+        return usdPrice + ' $';
+      }
+      return priceEur.toFixed(2) + ' €';
+    }
+
+    function displayProducts(category, containerId) {
+      const lang = localStorage.getItem('selectedLanguage') || 'fr';
+      const products = getProductsByCategory(category);
+      const container = document.getElementById(containerId);
+      if (!container) return;
+
+      container.innerHTML = '';
+
+      products.forEach(product => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.style.cursor = 'pointer';
+        card.onclick = () => window.location.href = `produit.html?id=${product.id}`;
+
+        // Image or placeholder
+        if (product.images[0] && product.images[0].trim() !== '') {
+          const img = document.createElement('img');
+          img.className = 'card-img';
+          img.src = product.images[0];
+          img.alt = product.name;
+          card.appendChild(img);
+        } else {
+          const placeholder = document.createElement('div');
+          placeholder.className = 'card-img-placeholder';
+          placeholder.innerHTML = `<div>📸</div><div>${lang === 'en' ? 'Image to add' : 'Image Ã  ajouter'}</div>`;
+          card.appendChild(placeholder);
+        }
+
+        const body = document.createElement('div');
+        body.className = 'card-body';
+
+        const name = document.createElement('span');
+        name.className = 'card-name';
+        name.textContent = product.name;
+
+        const price = document.createElement('span');
+        price.className = 'card-price';
+        price.textContent = formatPrice(product.price);
+
+        body.appendChild(name);
+        body.appendChild(price);
+
+        const btn = document.createElement('button');
+        btn.className = 'card-add';
+        btn.textContent = translations[lang]['btn-details'];
+        btn.onclick = (e) => {
+          e.stopPropagation();
+          window.location.href = `produit.html?id=${product.id}`;
+        };
+
+        card.appendChild(body);
+        card.appendChild(btn);
+
+        container.appendChild(card);
+      });
+    }
+
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      document.querySelector('.cart-count').textContent = cart.length;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      initLanguage();
+      displayProducts('pulls', 'productsContainerPulls');
+      displayProducts('vestes', 'productsContainerVestes');
+      displayProducts('tshirts', 'productsContainerTshirts');
+      displayProducts('casquettes', 'productsContainerCasquettes');
+      updateCartCount();
+    });
+  </script>
+
+</body>
+</html>

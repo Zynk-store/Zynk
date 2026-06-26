@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Se connecter - Zynk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #000;
+      --white: #fff;
+      --acid: #D4FF00;
+      --card-bg: #0f0f0f;
+      --border: #1c1c1c;
+      --muted: #555;
+    }
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+    }
+
+    .back-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--white);
+      padding: 10px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: all 0.2s;
+      font-family: 'Inter', sans-serif;
+      z-index: 100;
+    }
+
+    .back-btn:hover {
+      border-color: var(--acid);
+      color: var(--acid);
+      transform: translateX(-2px);
+    }
+    .auth-container {
+      width: 100%;
+      max-width: 400px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      padding: 40px;
+      border-radius: 8px;
+    }
+    .auth-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px;
+      letter-spacing: 4px;
+      text-align: center;
+      margin-bottom: 30px;
+      color: var(--acid);
+    }
+    .auth-title {
+      font-size: 18px;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 30px;
+      color: var(--white);
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      transition: border-color 0.25s;
+      border-radius: 4px;
+    }
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--acid);
+      box-shadow: 0 0 10px rgba(212, 255, 0, 0.1);
+    }
+    .form-group input::placeholder {
+      color: var(--muted);
+    }
+    .password-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .password-toggle {
+      position: absolute;
+      right: 12px;
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 4px 8px;
+      transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+    }
+    .password-toggle:hover {
+      color: var(--acid);
+    }
+    .eye-icon {
+      width: 18px;
+      height: 18px;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .password-input {
+      padding-right: 45px !important;
+    }
+    .auth-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--acid);
+      border: none;
+      color: var(--black);
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+    .auth-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(212, 255, 0, 0.3);
+    }
+    .auth-link {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .auth-link a {
+      color: var(--acid);
+      text-decoration: none;
+    }
+    .error-message {
+      background: rgba(255, 45, 85, 0.1);
+      border: 1px solid #ff2d55;
+      color: #ff2d55;
+      padding: 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    .error-message.show { display: block; }
+    .notification {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--acid);
+      color: var(--black);
+      padding: 16px 32px;
+      border-radius: 4px;
+      font-weight: 600;
+      z-index: 1000;
+      animation: slide-down 0.4s ease-out;
+    }
+    @keyframes slide-down {
+      from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <button class="back-btn" onclick="window.location.href='index.html'" data-i18n="btn-back">← Retour</button>
+
+  <div class="auth-container">
+    <div class="auth-logo">ZYNK</div>
+    <h1 class="auth-title" data-i18n="login-title">SE CONNECTER</h1>
+    <div class="error-message" id="errorMessage"></div>
+    <form id="loginForm" onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label for="email" data-i18n="email-label">Email</label>
+        <input type="email" id="email" required placeholder="votre@email.com" data-i18n-placeholder="email-placeholder">
+      </div>
+      <div class="form-group">
+        <label for="password" data-i18n="password-label">Mot de passe</label>
+        <div class="password-container">
+          <input type="password" id="password" class="password-input" required placeholder="••••••••" data-i18n-placeholder="password-placeholder">
+          <button type="button" class="password-toggle" id="togglePassword" onclick="togglePasswordVisibility()" title="Afficher/Masquer">
+            <svg id="eyeHidden" class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+              <line x1="1" y1="1" x2="23" y2="23"></line>
+            </svg>
+            <svg id="eyeVisible" class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <button type="submit" class="auth-btn" data-i18n="login-btn">Se connecter</button>
+    </form>
+    <div class="auth-link">
+      <span data-i18n="no-account">Pas encore de compte ?</span> <a href="inscription.html" data-i18n="signup-link">S'inscrire</a>
+    </div>
+  </div>
+  <script>
+    // Translations Dictionary
+    const translations = {
+      fr: {
+        'btn-back': '← Retour',
+        'login-title': 'SE CONNECTER',
+        'email-label': 'Email',
+        'email-placeholder': 'votre@email.com',
+        'password-label': 'Mot de passe',
+        'password-placeholder': '••••••••',
+        'login-btn': 'Se connecter',
+        'no-account': 'Pas encore de compte ?',
+        'signup-link': 'S\'inscrire',
+        'error-invalid': 'Email ou mot de passe incorrect.',
+        'success-login': 'Content de te revoir !'
+      },
+      en: {
+        'btn-back': '← Back',
+        'login-title': 'SIGN IN',
+        'email-label': 'Email',
+        'email-placeholder': 'your@email.com',
+        'password-label': 'Password',
+        'password-placeholder': '••••••••',
+        'login-btn': 'Sign in',
+        'no-account': 'Don\'t have an account yet?',
+        'signup-link': 'Sign up',
+        'error-invalid': 'Invalid email or password.',
+        'success-login': 'Welcome back!'
+      }
+    };
+
+    function applyTranslations(lang) {
+      const trans = translations[lang];
+      // Apply text translations
+      Object.keys(trans).forEach(key => {
+        const elements = document.querySelectorAll(`[data-i18n="${key}"]`);
+        elements.forEach(element => {
+          element.textContent = trans[key];
+        });
+      });
+      // Apply placeholder translations
+      Object.keys(trans).forEach(key => {
+        const elements = document.querySelectorAll(`[data-i18n-placeholder="${key}"]`);
+        elements.forEach(element => {
+          const placeholderKey = element.getAttribute('data-i18n-placeholder');
+          element.placeholder = trans[placeholderKey] || '';
+        });
+      });
+    }
+
+    function initLanguage() {
+      const savedLanguage = localStorage.getItem('selectedLanguage') || 'fr';
+      applyTranslations(savedLanguage);
+    }
+
+    function showError(message) {
+      const errorDiv = document.getElementById('errorMessage');
+      errorDiv.textContent = message;
+      errorDiv.classList.add('show');
+      setTimeout(() => { errorDiv.classList.remove('show'); }, 4000);
+    }
+    function showNotification(message) {
+      const notification = document.createElement('div');
+      notification.className = 'notification';
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      setTimeout(() => { notification.remove(); }, 4000);
+    }
+    function handleLogin(event) {
+      event.preventDefault();
+      const lang = localStorage.getItem('selectedLanguage') || 'fr';
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const users = JSON.parse(localStorage.getItem('zynkUsers')) || [];
+      const user = users.find(u => u.email === email && u.password === btoa(password));
+      if (!user) {
+        showError(translations[lang]['error-invalid']);
+        return;
+      }
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      showNotification(translations[lang]['success-login']);
+      setTimeout(() => { window.location.href = 'index.html'; }, 2000);
+    }
+
+    // Toggle password visibility
+    function togglePasswordVisibility() {
+      const passwordInput = document.getElementById('password');
+      const eyeHidden = document.getElementById('eyeHidden');
+      const eyeVisible = document.getElementById('eyeVisible');
+
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        eyeHidden.style.display = 'none';
+        eyeVisible.style.display = 'block';
+      } else {
+        passwordInput.type = 'password';
+        eyeHidden.style.display = 'block';
+        eyeVisible.style.display = 'none';
+      }
+    }
+
+    // Initialize language on page load
+    document.addEventListener('DOMContentLoaded', initLanguage);
+  </script>
+</body>
+</html>

@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Produit  Zynk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #000;
+      --white: #fff;
+      --acid: #D4FF00;
+      --card-bg: #0f0f0f;
+      --border: #1c1c1c;
+      --muted: #555;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      letter-spacing: 0.01em;
+      overflow-x: hidden;
+    }
+
+    /*  HEADER  */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 32px;
+      height: 60px;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 300;
+    }
+
+    .header-left { display: flex; align-items: center; gap: 20px; }
+
+    .menu-btn {
+      display: flex; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 4px;
+    }
+    .menu-btn span {
+      display: block; width: 22px; height: 1.5px;
+      background: var(--white);
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .menu-btn.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .menu-btn.open span:nth-child(2) { opacity: 0; }
+    .menu-btn.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px;
+      letter-spacing: 4px;
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .header-right { display: flex; align-items: center; gap: 16px; }
+
+    .cart-btn {
+      background: none; border: none; color: var(--white);
+      cursor: pointer; font-size: 18px;
+      position: relative;
+    }
+    .cart-count {
+      position: absolute;
+      top: -6px; right: -8px;
+      background: var(--acid);
+      color: var(--black);
+      font-size: 9px;
+      font-weight: 700;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .account-btn {
+      background: none; border: none; color: var(--white);
+      cursor: pointer; font-size: 18px;
+      transition: color 0.2s;
+    }
+    .account-btn:hover {
+      color: var(--acid);
+    }
+
+    /*  MAIN CONTENT  */
+    .product-container {
+      padding: 100px 32px 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--acid);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin-bottom: 40px;
+      transition: gap 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+    .back-btn:hover {
+      gap: 12px;
+    }
+
+    .product-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      margin-bottom: 60px;
+    }
+
+    @media (max-width: 768px) {
+      .product-layout {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+    }
+
+    /*  CAROUSEL  */
+    .carousel-container {
+      position: relative;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      aspect-ratio: 1;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    .carousel-container:hover {
+      border-color: var(--acid);
+    }
+
+    .carousel-main {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .carousel-main img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      flex: 0 0 100%;
+      background: #1a1a1a;
+    }
+
+    .carousel-main .empty-slide {
+      width: 100%;
+      height: 100%;
+      flex: 0 0 100%;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 14px;
+      text-align: center;
+      padding: 20px;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.7);
+      border: none;
+      color: var(--white);
+      font-size: 28px;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      font-family: 'Inter', sans-serif;
+      z-index: 10;
+    }
+
+    .carousel-arrow:hover {
+      background: var(--acid);
+      color: var(--black);
+    }
+
+    .carousel-arrow-left {
+      left: 16px;
+    }
+
+    .carousel-arrow-right {
+      right: 16px;
+    }
+
+    .carousel-dots {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 5;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .dot.active {
+      background: var(--acid);
+    }
+
+    .dot:hover {
+      background: rgba(255, 255, 255, 0.6);
+    }
+
+    /*  PRODUCT INFO  */
+    .product-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    .product-name {
+      font-family: 'Oswald', sans-serif;
+      font-size: 32px;
+      letter-spacing: 2px;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+
+    .product-price {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--acid);
+      margin-bottom: 24px;
+    }
+
+    .product-description {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 32px;
+      max-width: 500px;
+    }
+
+    .product-divider {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 32px;
+    }
+
+    /*  SIZE SELECTION  */
+    .size-section {
+      margin-bottom: 32px;
+    }
+
+    .size-label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+
+    .size-options {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .size-btn {
+      padding: 12px 18px;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--white);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .size-btn:hover {
+      border-color: var(--acid);
+      color: var(--acid);
+    }
+
+    .size-btn.active {
+      background: var(--acid);
+      border-color: var(--acid);
+      color: var(--black);
+      font-weight: 700;
+    }
+
+    /*  ADD TO CART  */
+    .add-to-cart-btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--acid);
+      border: none;
+      color: var(--black);
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.2s;
+      font-family: 'Inter', sans-serif;
+      margin-bottom: 16px;
+    }
+
+    .add-to-cart-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(212, 255, 0, 0.3);
+    }
+
+    .add-to-cart-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .add-to-cart-btn.success {
+      background: #34C759;
+    }
+
+    .notification {
+      position: fixed;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--acid);
+      color: var(--black);
+      padding: 16px 32px;
+      border-radius: 4px;
+      font-weight: 600;
+      z-index: 1000;
+      animation: slide-down 0.4s ease-out;
+    }
+
+    @keyframes slide-down {
+      from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+
+    /*  FOOTER  */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 60px 32px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .footer-brand .logo {
+      font-size: 40px;
+      display: block;
+      margin-bottom: 8px;
+    }
+    .footer-brand p {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+
+    .footer-social h4 {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .footer-social a {
+      display: block;
+      color: var(--white);
+      text-decoration: none;
+      font-size: 13px;
+      margin-bottom: 8px;
+      transition: color 0.2s;
+    }
+    .footer-social a:hover { color: var(--acid); }
+
+    .footer-copy {
+      width: 100%;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+
+    .size-note {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 12px;
+      font-style: italic;
+    }
+
+    /*  LIGHTBOX  */
+    .lightbox-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.95);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 20px;
+    }
+
+    .lightbox-overlay.active {
+      display: flex;
+    }
+
+    .lightbox-container {
+      position: relative;
+      width: 100%;
+      max-width: 90vh;
+      height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .lightbox-empty {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(0, 0, 0, 0.7);
+      border: none;
+      color: var(--white);
+      font-size: 32px;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      transition: background 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .lightbox-close:hover {
+      background: var(--acid);
+      color: var(--black);
+    }
+
+    .lightbox-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.7);
+      border: none;
+      color: var(--white);
+      font-size: 36px;
+      width: 60px;
+      height: 60px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      font-family: 'Inter', sans-serif;
+      z-index: 10;
+    }
+
+    .lightbox-arrow:hover {
+      background: var(--acid);
+      color: var(--black);
+    }
+
+    .lightbox-arrow-left {
+      left: 20px;
+    }
+
+    .lightbox-arrow-right {
+      right: 20px;
+    }
+
+    .lightbox-counter {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.7);
+      color: var(--white);
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-left">
+      <a href="index.html" class="logo">ZYNK</a>
+    </div>
+    <div class="header-right">
+      <button class="cart-btn" onclick="openCart()" aria-label="Panier" data-i18n-aria="aria-cart">
+        🛒 <span class="cart-count">0</span>
+      </button>
+      <button class="account-btn" onclick="toggleAccountMenu()" aria-label="S’identifier" data-i18n-aria="aria-account">👤</button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <div class="product-container">
+    <button class="back-btn" onclick="history.back()" data-i18n="btn-back"> Retour</button>
+
+    <div class="product-layout">
+      <!-- CAROUSEL -->
+      <div class="carousel-container">
+        <div class="carousel-main" id="carouselMain" onclick="openLightbox()"></div>
+        <button class="carousel-arrow carousel-arrow-left" onclick="prevImage()">←</button>
+        <button class="carousel-arrow carousel-arrow-right" onclick="nextImage()">→</button>
+        <div class="carousel-dots" id="carouselDots"></div>
+      </div>
+
+      <!-- PRODUCT INFO -->
+      <div class="product-info">
+        <h1 class="product-name" id="productName"></h1>
+        <div class="product-price" id="productPrice"></div>
+        <p class="product-description" id="productDescription"></p>
+
+        <div class="product-divider"></div>
+
+        <!-- SIZE SELECTION -->
+        <div class="size-section">
+          <label class="size-label" data-i18n="size-label">Taille</label>
+          <div class="size-options" id="sizeOptions"></div>
+          <div class="size-note" id="sizeNote"></div>
+        </div>
+
+        <!-- ADD TO CART -->
+        <button class="add-to-cart-btn" id="addToCartBtn" onclick="handleAddToCart()" data-i18n="btn-add-cart">
+          Ajouter au panier
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox-overlay" id="lightboxOverlay">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <button class="lightbox-arrow lightbox-arrow-left" onclick="prevImageLightbox()">←</button>
+    <div class="lightbox-container">
+      <div id="lightboxContent"></div>
+    </div>
+    <button class="lightbox-arrow lightbox-arrow-right" onclick="nextImageLightbox()">→</button>
+    <div class="lightbox-counter">
+      <span id="lightboxCounter">1 / 4</span>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">
+      <span class="logo">ZYNK</span>
+      <p data-i18n="footer-tagline">Streetwear Premium  Marseille</p>
+    </div>
+    <div class="footer-social">
+      <h4 data-i18n="footer-social-title">Suivez-nous</h4>
+      <a href="https://instagram.com/mathis_spamz" target="_blank">Instagram · @mathis_spamz</a>
+      <a href="https://tiktok.com/@mathis_spamz" target="_blank">TikTok · @mathis_spamz</a>
+    </div>
+    <p class="footer-copy" data-i18n="footer-copy"> 2025 Zynk. Tous droits réservés.</p>
+  </footer>
+
+  <script src="produits.js"></script>
+  <script>
+    // Translations Dictionary
+    const translations = {
+      fr: {
+        'btn-back': ' Retour',
+        'aria-cart': 'Panier',
+        'aria-account': 'S\'identifier',
+        'size-label': 'Taille',
+        'size-note-caps': 'Cette casquette dispose d\'une sangle réglable pour un ajustement parfait.',
+        'btn-add-cart': 'Ajouter au panier',
+        'btn-added': ' Ajouté',
+        'select-size': 'Veuillez sélectionner une taille',
+        'notification-added': ' Ajouté au panier',
+        'footer-tagline': 'Streetwear Premium  Marseille',
+        'footer-social-title': 'Suivez-nous',
+        'footer-copy': ' 2025 Zynk. Tous droits réservés.'
+      },
+      en: {
+        'btn-back': ' Back',
+        'aria-cart': 'Cart',
+        'aria-account': 'Sign in',
+        'size-label': 'Size',
+        'size-note-caps': 'This cap has an adjustable strap for a perfect fit.',
+        'btn-add-cart': 'Add to cart',
+        'btn-added': ' Added',
+        'select-size': 'Please select a size',
+        'notification-added': ' Added to cart',
+        'footer-tagline': 'Premium Streetwear  Marseille',
+        'footer-social-title': 'Follow us',
+        'footer-copy': ' 2025 Zynk. All rights reserved.'
+      }
+    };
+
+    function applyTranslations(lang) {
+      const trans = translations[lang];
+      // Apply text translations
+      Object.keys(trans).forEach(key => {
+        const elements = document.querySelectorAll(`[data-i18n="${key}"]`);
+        elements.forEach(element => {
+          element.textContent = trans[key];
+        });
+      });
+      // Apply aria-label translations
+      Object.keys(trans).forEach(key => {
+        const elements = document.querySelectorAll(`[data-i18n-aria="${key}"]`);
+        elements.forEach(element => {
+          element.setAttribute('aria-label', trans[key]);
+        });
+      });
+    }
+
+    function initLanguage() {
+      const savedLanguage = localStorage.getItem('selectedLanguage') || 'fr';
+      applyTranslations(savedLanguage);
+    }
+
+    let currentProduct = null;
+    let currentImageIndex = 0;
+    let selectedSize = null;
+
+    // Get product ID from URL
+    function getProductIdFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('id');
+    }
+
+    // Initialize product page
+    function initProduct() {
+      initLanguage();
+
+      const productId = getProductIdFromURL();
+      if (!productId) {
+        window.location.href = 'index.html';
+        return;
+      }
+
+      currentProduct = getProductById(productId);
+      if (!currentProduct) {
+        window.location.href = 'index.html';
+        return;
+      }
+
+      displayProduct();
+      updateCartCount();
+    }
+
+    // Display product
+    function displayProduct() {
+      const lang = localStorage.getItem('selectedLanguage') || 'fr';
+      // Product info
+      const productName = lang === 'en' ? (currentProduct.nameEn || currentProduct.name) : currentProduct.name;
+      const productDescription = lang === 'en' ? (currentProduct.descriptionEn || currentProduct.description) : currentProduct.description;
+
+      document.getElementById('productName').textContent = productName;
+      document.getElementById('productPrice').textContent = formatPrice(currentProduct.price);
+      document.getElementById('productDescription').textContent = productDescription;
+
+      // Carousel
+      displayCarousel();
+
+      // Size options
+      displaySizeOptions();
+    }
+
+    // Display carousel images
+    function displayCarousel() {
+      const carouselMain = document.getElementById('carouselMain');
+      const carouselDots = document.getElementById('carouselDots');
+
+      carouselMain.innerHTML = '';
+      carouselDots.innerHTML = '';
+
+      currentProduct.images.forEach((image, index) => {
+        if (image && image.trim() !== '') {
+          const img = document.createElement('img');
+          img.src = image;
+          img.alt = currentProduct.name;
+          carouselMain.appendChild(img);
+        } else {
+          const empty = document.createElement('div');
+          empty.className = 'empty-slide';
+          empty.innerHTML = `<div>📸</div><div>Image ${index + 1}</div><div>(À remplir)</div>`;
+          carouselMain.appendChild(empty);
+        }
+
+        const dot = document.createElement('div');
+        dot.className = 'dot' + (index === 0 ? ' active' : '');
+        dot.onclick = () => goToImage(index);
+        carouselDots.appendChild(dot);
+      });
+
+      updateCarouselPosition();
+    }
+
+    // Update carousel position
+    function updateCarouselPosition() {
+      const carouselMain = document.getElementById('carouselMain');
+      carouselMain.style.transform = `translateX(-${currentImageIndex * 100}%)`;
+
+      const dots = document.querySelectorAll('.dot');
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentImageIndex);
+      });
+    }
+
+    // Navigation
+    function nextImage() {
+      currentImageIndex = (currentImageIndex + 1) % currentProduct.images.length;
+      updateCarouselPosition();
+    }
+
+    function prevImage() {
+      currentImageIndex = (currentImageIndex - 1 + currentProduct.images.length) % currentProduct.images.length;
+      updateCarouselPosition();
+    }
+
+    function goToImage(index) {
+      currentImageIndex = index;
+      updateCarouselPosition();
+    }
+
+    // Display size options
+    function displaySizeOptions() {
+      const lang = localStorage.getItem('selectedLanguage') || 'fr';
+      const sizeOptions = document.getElementById('sizeOptions');
+      const sizeNote = document.getElementById('sizeNote');
+      sizeOptions.innerHTML = '';
+
+      const sizes = lang === 'en' && currentProduct.sizesEn ? currentProduct.sizesEn : currentProduct.sizes;
+
+      sizes.forEach(size => {
+        const btn = document.createElement('button');
+        btn.className = 'size-btn';
+        btn.textContent = size;
+        btn.onclick = () => selectSize(size, btn);
+        sizeOptions.appendChild(btn);
+      });
+
+      // Select first size by default
+      if (sizes.length > 0) {
+        selectSize(sizes[0], sizeOptions.querySelector('.size-btn'));
+      }
+
+      // Show note for adjustable caps
+      if (currentProduct.category === 'casquettes') {
+        sizeNote.textContent = translations[lang]['size-note-caps'];
+      }
+    }
+
+    // Select size
+    function selectSize(size, btn) {
+      selectedSize = size;
+      document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    // Format price based on currency
+    function formatPrice(priceEur) {
+      const currency = localStorage.getItem('selectedCurrency') || 'eur';
+      if (currency === 'usd') {
+        const usdPrice = Math.round(priceEur * 1.14 * 100) / 100;
+        return usdPrice + ' $';
+      }
+      return priceEur.toFixed(2) + ' €';
+    }
+
+    // Add to cart
+    function handleAddToCart() {
+      const lang = localStorage.getItem('selectedLanguage') || 'fr';
+      if (!selectedSize) {
+        showNotification(translations[lang]['select-size']);
+        return;
+      }
+
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const item = {
+        id: Date.now(),
+        name: currentProduct.name,
+        price: currentProduct.price.toFixed(2) + ' €',
+        size: selectedSize,
+        productId: currentProduct.id
+      };
+
+      cart.push(item);
+      localStorage.setItem('cart', JSON.stringify(cart));
+
+      updateCartCount();
+      showNotification(translations[lang]['notification-added']);
+
+      const btn = document.getElementById('addToCartBtn');
+      btn.textContent = translations[lang]['btn-added'];
+      btn.classList.add('success');
+      setTimeout(() => {
+        btn.textContent = translations[lang]['btn-add-cart'];
+        btn.classList.remove('success');
+      }, 2000);
+    }
+
+    // Utility functions
+    function showNotification(message) {
+      const notification = document.createElement('div');
+      notification.className = 'notification';
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      setTimeout(() => notification.remove(), 3000);
+    }
+
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      document.querySelector('.cart-count').textContent = cart.length;
+    }
+
+    function openCart() {
+      window.location.href = 'panier.html';
+    }
+
+    function toggleAccountMenu() {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      if (currentUser) {
+        window.location.href = 'compte.html';
+      } else {
+        window.location.href = 'login.html';
+      }
+    }
+
+    // Initialize on load
+    document.addEventListener('DOMContentLoaded', initProduct);
+
+    // Lightbox functions
+    function openLightbox() {
+      document.getElementById('lightboxOverlay').classList.add('active');
+      updateLightbox();
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightboxOverlay').classList.remove('active');
+    }
+
+    function updateLightbox() {
+      const content = document.getElementById('lightboxContent');
+      const image = currentProduct.images[currentImageIndex];
+
+      if (image && image.trim() !== '') {
+        const img = document.createElement('img');
+        img.className = 'lightbox-image';
+        img.src = image;
+        img.alt = currentProduct.name;
+        content.innerHTML = '';
+        content.appendChild(img);
+      } else {
+        content.innerHTML = '<div class="lightbox-empty">Image non disponible</div>';
+      }
+
+      const totalImages = currentProduct.images.length;
+      document.getElementById('lightboxCounter').textContent = `${currentImageIndex + 1} / ${totalImages}`;
+    }
+
+    function prevImageLightbox() {
+      currentImageIndex = (currentImageIndex - 1 + currentProduct.images.length) % currentProduct.images.length;
+      updateCarouselPosition();
+      updateLightbox();
+    }
+
+    function nextImageLightbox() {
+      currentImageIndex = (currentImageIndex + 1) % currentProduct.images.length;
+      updateCarouselPosition();
+      updateLightbox();
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      const lightbox = document.getElementById('lightboxOverlay');
+      const isLightboxOpen = lightbox.classList.contains('active');
+
+      if (isLightboxOpen) {
+        if (e.key === 'ArrowLeft') prevImageLightbox();
+        if (e.key === 'ArrowRight') nextImageLightbox();
+        if (e.key === 'Escape') closeLightbox();
+      } else {
+        if (e.key === 'ArrowLeft') prevImage();
+        if (e.key === 'ArrowRight') nextImage();
+      }
+    });
+
+    // Close lightbox on background click
+    document.getElementById('lightboxOverlay').addEventListener('click', (e) => {
+      if (e.target.id === 'lightboxOverlay') {
+        closeLightbox();
+      }
+    });
+  </script>
+
+</body>
+</html>

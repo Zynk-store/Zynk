@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Charte de Vente - ZYNK</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #000;
+      --white: #fff;
+      --acid: #D4FF00;
+      --card-bg: #0f0f0f;
+      --border: #1c1c1c;
+      --muted: #555;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      letter-spacing: 0.01em;
+      overflow-x: hidden;
+    }
+
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 32px;
+      height: 60px;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 300;
+    }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px;
+      letter-spacing: 4px;
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .container {
+      padding: 100px 32px 60px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 48px;
+      letter-spacing: 3px;
+      margin-bottom: 40px;
+      color: var(--acid);
+    }
+
+    h2 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 24px;
+      letter-spacing: 2px;
+      margin-top: 40px;
+      margin-bottom: 20px;
+      color: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+
+    p {
+      line-height: 1.8;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    ul, ol {
+      margin-left: 20px;
+      margin-bottom: 16px;
+      color: var(--muted);
+    }
+
+    li {
+      margin-bottom: 8px;
+      line-height: 1.6;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--acid);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin-bottom: 40px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .back-btn:hover {
+      gap: 12px;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 60px 32px;
+      margin-top: 80px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .footer-brand .logo {
+      font-size: 40px;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .footer-brand p {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+
+    .footer-copy {
+      width: 100%;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 80px 16px 60px; }
+      h1 { font-size: 32px; }
+      h2 { font-size: 18px; }
+      footer { padding: 40px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <a href="index.html" class="logo">ZYNK</a>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <div class="container">
+    <button class="back-btn" onclick="history.back()">← Retour</button>
+
+    <h1>CHARTE DE VENTE ZYNK</h1>
+
+    <h2>1. OBJET ET CHAMP D'APPLICATION</h2>
+    <p>La présente charte de vente définit les conditions et modalités d'achat des produits proposés par ZYNK, marque de streetwear premium. Cette charte s'applique à tous les clients effectuant des achats sur notre plateforme de commerce électronique.</p>
+
+    <h2>2. PRODUITS ET PRIX</h2>
+    <p>Les produits proposés sont des vêtements et accessoires de la marque ZYNK. Les prix affichés sont en euros (€) ou en dollars américains ($) selon la sélection du client. Les prix incluent les taxes applicables.</p>
+    <ul>
+      <li>Les prix sont susceptibles de changer sans préavis</li>
+      <li>Une confirmation de prix sera envoyée avant la finalisation de la commande</li>
+      <li>Les frais de port sont calculés en fonction de la destination</li>
+    </ul>
+
+    <h2>3. COMMANDE ET CONFIRMATION</h2>
+    <p>Chaque commande effectuée constitue une offre d'achat. La commande est confirmée par email dès la validation du paiement. Un numéro de suivi vous permettra de consulter l'état de votre commande à tout moment.</p>
+    <ul>
+      <li>La confirmation de commande est envoyée dans un délai de 24 heures</li>
+      <li>Les informations d'expédition seront transmises par email</li>
+    </ul>
+
+    <h2>4. DÉLAIS DE LIVRAISON</h2>
+    <p>Les délais de livraison sont estimés et communiqués lors de la validation de la commande. ZYNK s'engage à expédier les commandes dans les meilleurs délais.</p>
+    <ul>
+      <li>Livraison en France métropolitaine: 3 à 5 jours ouvrables</li>
+      <li>Livraison en Europe: 5 à 10 jours ouvrables</li>
+      <li>Livraison internationale: 10 à 20 jours ouvrables</li>
+    </ul>
+
+    <h2>5. POLITIQUE DE RETOUR ET REMBOURSEMENT</h2>
+    <p>Vous disposez d'un délai de 14 jours à compter de la réception du produit pour le retourner en bon état d'origine.</p>
+    <ul>
+      <li>Les produits doivent être non portés et non lavés</li>
+      <li>L'étiquette doit être intacte</li>
+      <li>Les frais de retour sont à la charge du client</li>
+      <li>Le remboursement sera effectué sous 14 jours suivant la réception du produit</li>
+    </ul>
+
+    <h2>6. GARANTIE ET QUALITÉ</h2>
+    <p>Tous les produits ZYNK sont contrôlés qualité avant l'expédition. Nous garantissons la qualité premium de nos articles.</p>
+    <ul>
+      <li>Garantie d'usine: 1 an sur les défauts de fabrication</li>
+      <li>En cas de défaut, contactez notre service client</li>
+      <li>Le remplacement ou remboursement sera proposé</li>
+    </ul>
+
+    <h2>7. PAIEMENT</h2>
+    <p>ZYNK accepte les modes de paiement suivants:</p>
+    <ul>
+      <li>Cartes bancaires (Visa, Mastercard, American Express)</li>
+      <li>Apple Pay</li>
+      <li>PayPal</li>
+      <li>Shop Pay</li>
+      <li>Carte Bancaire</li>
+    </ul>
+    <p>Les paiements sont sécurisés par un protocole de chiffrement SSL. Aucune information bancaire n'est conservée sur nos serveurs.</p>
+
+    <h2>8. PROTECTION DES DONNÉES</h2>
+    <p>Vos données personnelles sont protégées conformément à la législation en vigueur (RGPD). ZYNK s'engage à ne pas vendre vos données à des tiers.</p>
+    <ul>
+      <li>Vos données sont utilisées uniquement pour la gestion de votre commande</li>
+      <li>Vous pouvez demander l'accès, la modification ou la suppression de vos données</li>
+      <li>Contactez privacy@zynk.fr pour toute demande</li>
+    </ul>
+
+    <h2>9. SERVICE CLIENT</h2>
+    <p>Notre équipe est à votre disposition pour répondre à vos questions et résoudre vos préoccupations.</p>
+    <ul>
+      <li>Email: service.zynk@gmail.com</li>
+      <li>Délai de réponse: 24 à 48 heures</li>
+      <li>Chat en ligne disponible du lundi au vendredi, 10h-18h</li>
+    </ul>
+
+    <h2>10. RESPONSABILITÉ</h2>
+    <p>ZYNK ne peut être tenue responsable des dommages indirects ou de la perte d'utilisation causés par l'utilisation de nos produits. La responsabilité de ZYNK est limitée au montant de la commande.</p>
+
+    <h2>11. MODIFICATIONS DE LA CHARTE</h2>
+    <p>ZYNK se réserve le droit de modifier cette charte à tout moment. Les modifications entreront en vigueur dès leur publication. Votre utilisation continue de la plateforme implique votre acceptation des modifications.</p>
+
+    <h2>12. LOI APPLICABLE</h2>
+    <p>Cette charte est régie par la loi française. Tout litige sera soumis à la juridiction des tribunaux français. Pour les consommateurs, le droit de rétractation est garanti conformément à la directive européenne 2011/83/UE.</p>
+
+    <h2>13. ACCEPTATION</h2>
+    <p>En effectuant un achat auprès de ZYNK, vous acceptez les conditions énoncées dans cette charte de vente. Si vous n'acceptez pas ces conditions, veuillez ne pas procéder à l'achat.</p>
+
+    <p style="margin-top: 60px; font-style: italic; color: var(--acid);">Charte de vente ZYNK - Dernière mise à jour: Juin 2026</p>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">
+      <span class="logo">ZYNK</span>
+      <p>Streetwear Premium · Marseille</p>
+    </div>
+    <p class="footer-copy">© 2025 ZYNK. Tous droits réservés.</p>
+  </footer>
+
+</body>
+</html>
